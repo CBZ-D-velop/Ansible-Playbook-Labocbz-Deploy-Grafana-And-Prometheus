@@ -1,2 +1,8 @@
 ---
 ansible_ssh_port: 22
+
+inv_install_prometheus: true
+inv_install_grafana: false
+inv_install_apache: false
+
+install_prometheus_instancename: "molecule-local-instance-2-deploy-grafana-and-prometheus"

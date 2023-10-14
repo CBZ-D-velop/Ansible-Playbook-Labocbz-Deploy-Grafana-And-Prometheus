@@ -14,3 +14,11 @@
 - name: "labocbz.install_prometheus"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-Prometheus.git"
   version: "2.0"
+
+- name: "labocbz.install_apache"
+  src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-Apache.git"
+  version: "3.0"
+
+- name: "labocbz.add_apache_confs"
+  src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Add-Apache-Confs.git"
+  version: "3.0"

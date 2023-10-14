@@ -1,11 +1,217 @@
 ---
-- name: "labocbz.deploy_grafana_and_prometheus"
-  hosts: "all"
+- name: "Install Prometheus"
+  hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
   remote_user: root
   strategy: free
   become: true
   become_method: sudo
   become_user: root
+  tags:
+    - "labocbz.install_prometheus"
 
   tasks:
+
+    - name: "Install Prometheus"
+      when: inv_install_prometheus | default(false)
+      block:
+        - name: "Include labocbz.prepare_host"
+          tags:
+            - "labocbz.prepare_host"
+          vars:
+            prepare_host_users: "{{ inv_prometheus_prepare_host_users }}"
+          ansible.builtin.include_role:
+            name: "labocbz.prepare_host"
+
+        - name: "Include labocbz.add_certificates"
+          tags:
+            - "labocbz.add_certificates"
+          loop: "{{ inv_prometheus_cert_bundles }}"
+          loop_control:
+            loop_var: bundle
+          when: inv_prometheus_cert_bundles is defined
+          vars:
+            add_certificates_bundle_name: "{{ bundle.name }}"
+            add_certificates_bundle_type: "{{ bundle.type }}"
+            add_certificates_bundle_src: "{{ bundle.src }}"
+            add_certificates_bundle_dest: "{{ bundle.dest }}"
+            add_certificates_bundle_src_user: "{{ bundle.src_user }}"
+            add_certificates_bundle_src_password: "{{ bundle.src_password }}"
+            add_certificates_bundle_dest_user: "{{ bundle.dest_user }}"
+            add_certificates_bundle_dest_group: "{{ bundle.dest_group }}"
+            add_certificates_bundle_dest_mode: "{{ bundle.dest_mode }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_certificates"
+
+        - name: "Include labocbz.install_prometheus"
+          tags:
+            - "labocbz.install_prometheus"
+          vars:
+            install_prometheus_port: "{{ inv_install_prometheus_port }}"
+            install_prometheus_host: "{{ inv_install_prometheus_host }}"
+            install_prometheus_ssl_path: "{{ inv_install_prometheus_ssl_path }}"
+            install_prometheus_scrape_interval: "{{ inv_install_prometheus_scrape_interval }}"
+            install_prometheus_evaluation_interval: "{{ inv_install_prometheus_evaluation_interval }}"
+            install_prometheus_loglevel: "{{ inv_install_prometheus_loglevel }}"
+            install_prometheus_ssl: "{{ inv_install_prometheus_ssl }}"
+            install_prometheus_ssl_key: "{{ inv_install_prometheus_ssl_key }}"
+            install_prometheus_ssl_crt: "{{ inv_install_prometheus_ssl_crt }}"
+            install_prometheus_ssl_ca: "{{ inv_install_prometheus_ssl_ca }}"
+            install_prometheus_basic_auth: "{{ inv_install_prometheus_basic_auth }}"
+            install_prometheus_basic_auth_login: "{{ inv_install_prometheus_basic_auth_login }}"
+            install_prometheus_basic_auth_password: "{{ inv_install_prometheus_basic_auth_password }}"
+            install_prometheus_basic_auth_password_hash: "{{ inv_install_prometheus_basic_auth_password_hash }}"
+            install_prometheus_instancename: "{{ inv_install_prometheus_clustername }}"
+            install_prometheus_federate_collector_interval: "{{ inv_install_prometheus_federate_collector_interval }}"
+            install_prometheus_jobs: "{{ inv_install_prometheus_jobs }}"
+          ansible.builtin.include_role:
+            name: "labocbz.install_prometheus"
+
+- name: "Install Grafana"
+  hosts: "{{ tower_env | default([]) }}"
+  gather_facts: true
+  remote_user: root
+  strategy: free
+  become: true
+  become_method: sudo
+  become_user: root
+  tags:
+    - "labocbz.install_grafana"
+
+  tasks:
+
+    - name: "Install Grafana"
+      when: inv_install_grafana | default(false)
+      block:
+        - name: "Include labocbz.prepare_host"
+          tags:
+            - "labocbz.prepare_host"
+          vars:
+            prepare_host_users: "{{ inv_grafana_prepare_host_users }}"
+          ansible.builtin.include_role:
+            name: "labocbz.prepare_host"
+
+        - name: "Include labocbz.add_certificates"
+          tags:
+            - "labocbz.add_certificates"
+          loop: "{{ inv_grafana_cert_bundles }}"
+          loop_control:
+            loop_var: bundle
+          when: inv_grafana_cert_bundles is defined
+          vars:
+            add_certificates_bundle_name: "{{ bundle.name }}"
+            add_certificates_bundle_type: "{{ bundle.type }}"
+            add_certificates_bundle_src: "{{ bundle.src }}"
+            add_certificates_bundle_dest: "{{ bundle.dest }}"
+            add_certificates_bundle_src_user: "{{ bundle.src_user }}"
+            add_certificates_bundle_src_password: "{{ bundle.src_password }}"
+            add_certificates_bundle_dest_user: "{{ bundle.dest_user }}"
+            add_certificates_bundle_dest_group: "{{ bundle.dest_group }}"
+            add_certificates_bundle_dest_mode: "{{ bundle.dest_mode }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_certificates"
+
+        - name: "Include labocbz.install_grafana"
+          tags:
+            - "labocbz.install_grafana"
+          vars:
+            install_grafana_app_mode: "{{ inv_install_grafana_app_mode }}"
+            install_grafana_data: "{{ inv_install_grafana_data }}"
+            install_grafana_temp_data_lifetime: "{{ inv_install_grafana_temp_data_lifetime }}"
+            install_grafana_protocol: "{{ inv_install_grafana_protocol }}"
+            install_grafana_min_tls_version: "{{ inv_install_grafana_min_tls_version }}"
+            install_grafana_http_addr: "{{ inv_install_grafana_http_addr }}"
+            install_grafana_http_port: "{{ inv_install_grafana_http_port }}"
+            install_grafana_domain: "{{ inv_install_grafana_domain }}"
+            install_grafana_enforce_domain: "{{ inv_install_grafana_enforce_domain }}"
+            install_grafana_root_url: "{{ inv_install_grafana_root_url }}"
+            install_grafana_serve_from_sub_path: "{{ inv_install_grafana_serve_from_sub_path }}"
+            install_grafana_router_logging: "{{ inv_install_grafana_router_logging }}"
+            install_grafana_enable_gzip: "{{ inv_install_grafana_enable_gzip }}"
+            install_grafana_cert_file: "{{ inv_install_grafana_cert_file }}"
+            install_grafana_cert_key: "{{ inv_install_grafana_cert_key }}"
+          ansible.builtin.include_role:
+            name: "labocbz.install_grafana"
+
+
+- name: "Install Apache2"
+  hosts: "{{ tower_env | default([]) }}"
+  gather_facts: true
+  remote_user: root
+  strategy: free
+  become: true
+  become_method: sudo
+  become_user: root
+  tags:
+    - "labocbz.install_apache"
+
+  tasks:
+
+    - name: "Install Grafana"
+      when: inv_install_apache | default(false)
+      block:
+        - name: "Include labocbz.prepare_host"
+          tags:
+            - "labocbz.prepare_host"
+          ansible.builtin.include_role:
+            name: "labocbz.prepare_host"
+
+        - name: "Include labocbz.add_certificates"
+          tags:
+            - "labocbz.add_certificates"
+          loop: "{{ inv_add_apache_confs_configurations_cert_bundles }}"
+          loop_control:
+            loop_var: bundle
+          when: inv_add_apache_confs_configurations_cert_bundles is defined
+          vars:
+            add_certificates_bundle_name: "{{ bundle.name }}"
+            add_certificates_bundle_type: "{{ bundle.type }}"
+            add_certificates_bundle_src: "{{ bundle.src }}"
+            add_certificates_bundle_dest: "{{ bundle.dest }}"
+            add_certificates_bundle_src_user: "{{ bundle.src_user }}"
+            add_certificates_bundle_src_password: "{{ bundle.src_password }}"
+            add_certificates_bundle_dest_user: "{{ bundle.dest_user }}"
+            add_certificates_bundle_dest_group: "{{ bundle.dest_group }}"
+            add_certificates_bundle_dest_mode: "{{ bundle.dest_mode }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_certificates"
+
+        - name: "Include labocbz.install_apache"
+          tags:
+            - "labocbz.install_apache"
+          vars:
+            install_apache_https_listen_port: "{{ inv_install_apache_https_listen_port }}"
+            install_apache_http_listen_port: "{{ inv_install_apache_http_listen_port }}"
+            install_apache_modules: "{{ inv_install_apache_modules }}"
+            install_apache_enable_qos: "{{ inv_install_apache_enable_qos }}"
+            install_apache_enable_security: "{{ inv_install_apache_enable_security }}"
+            install_apache_security_core_version: "{{ inv_install_apache_security_core_version }}"
+            install_apache_remove_all_vhosts: "{{ inv_install_apache_remove_all_vhosts }}"
+            install_apache_loglevel: "{{ inv_install_apache_loglevel }}"
+            install_apache_security_version: "{{ inv_install_apache_security_version }}"
+            install_apache_enable_evasive: "{{ inv_install_apache_enable_evasive }}"
+            install_apache_enable_pagespeed: "{{ inv_install_apache_enable_pagespeed }}"
+            install_apache_enable_prefork: "{{ inv_install_apache_enable_prefork }}"
+          ansible.builtin.include_role:
+            name: "labocbz.install_apache"
+
+        - name: "Include labocbz.add_apache_confs"
+          tags:
+            - "labocbz.add_apache_confs"
+          vars:
+            add_apache_confs_http_listen_port: "{{ inv_add_apache_confs_http_listen_port }}"
+            add_apache_confs_https_listen_port: "{{ inv_add_apache_confs_https_listen_port }}"
+            add_apache_confs_ldap_url: "{{ inv_add_apache_confs_ldap_url }}"
+            add_apache_confs_ldap_port: "{{ inv_add_apache_confs_ldap_port }}"
+            add_apache_confs_ldap_dc: "{{ inv_add_apache_confs_ldap_dc }}"
+            add_apache_confs_auth_ldap_url: "{{ inv_add_apache_confs_auth_ldap_url }}"
+            add_apache_confs_custom_ldap_base_header: "{{ inv_add_apache_confs_custom_ldap_base_header }}"
+            add_apache_confs_webmaster: "{{ inv_add_apache_confs_webmaster }}"
+            add_apache_confs_request_body: "{{ inv_add_apache_confs_request_body }}"
+            add_apache_confs_security_body_limit: "{{ inv_add_apache_confs_security_body_limit }}"
+            add_apache_confs_ssl_files_path: "{{ inv_add_apache_confs_ssl_files_path }}"
+            add_apache_confs_conf_path: "{{ inv_add_apache_confs_conf_path }}"
+            add_apache_confs_base_document_root: "{{ inv_add_apache_confs_base_document_root }}"
+            add_apache_confs_configurations: "{{ inv_add_apache_confs_configurations }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_apache_confs"

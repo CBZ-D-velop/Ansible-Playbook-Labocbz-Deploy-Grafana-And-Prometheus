@@ -81,7 +81,8 @@ all vars from to put/from your inventory
 ```YAML
 # From AWX / Tower
 ---
-all vars from to put/from AWX / Tower
+# all vars from to put/from your inventory
+# see tests/inventory/group_var for all groups and vars.
 ```
 
 ## Architectural Decisions Records
@@ -91,6 +92,18 @@ Here you can put your change to keep a trace of your work and decisions.
 ### 2023-10-14: First Init
 
 * First init of this playbook with the bootstrap_playbook playbook by Lord Robin Crombez
+
+### 2023-10-14-b: Full Deploy
+
+* Playbook deploy Prometheus
+* Playbook deploy Grafana
+* Playbook deploy Apache2 as front reverse proxy
+* mTLS from Prom => Prom
+* mTLS From Graf => Preom
+* TLS from Apa => Graf
+* TLS from Client => Apa
+* Why use Apache2 ? Because you can set secutiry with WAF, LDAP Auth, etc. as primary Auth gate
+* Groups are required for vars, but deployment is done with boolean vars, you can deploy Prometheus cluster only, or just Grafana, or just Apache2, or both, etc. Just use boolean vars as inv_install_apache to deploy Apache2 on the host you wanted, in test case: molecule-1
 
 ## Authors
 
