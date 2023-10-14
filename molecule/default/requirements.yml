@@ -3,6 +3,14 @@
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Prepare-Host.git"
   version: "2.0"
 
-#- name: "labocbz.add_certificates"
-#  src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Add-Certificates.git"
-#  version: "2.0"
+- name: "labocbz.add_certificates"
+  src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Add-Certificates.git"
+  version: "2.0"
+
+- name: "labocbz.install_grafana"
+  src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-Grafana.git"
+  version: "2.0"
+
+- name: "labocbz.install_prometheus"
+  src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-Prometheus.git"
+  version: "2.0"
