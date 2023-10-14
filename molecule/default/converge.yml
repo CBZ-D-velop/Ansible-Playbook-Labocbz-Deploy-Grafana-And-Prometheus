@@ -1,0 +1,5 @@
+---
+- name: "Include labocbz.deploy_grafana_and_prometheus playbook"
+  tags:
+      - "labocbz.deploy_grafana_and_prometheus"
+  ansible.builtin.import_playbook: "../../playbook.yml"
