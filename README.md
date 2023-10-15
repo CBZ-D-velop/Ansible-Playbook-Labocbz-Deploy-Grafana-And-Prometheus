@@ -17,9 +17,27 @@
 ![Tag: SSL/TLS](https://img.shields.io/badge/Tech-SSL%2FTLS-orange)
 ![Tag: mTLS](https://img.shields.io/badge/Tech-mTLS-orange)
 
-An Ansible playbook deploy and configure Grafana and Prometheus on your host.
+Welcome to the summary of the Ansible playbook for simplifying the deployment and configuration of Prometheus, Grafana, and Apache2. This playbook offers great flexibility, allowing you to install these essential monitoring and visualization components either on a single machine or on multiple machines.
+
+The playbook is divided into three main tasks, each managed by a dedicated role:
+
+1. **Grafana Installation**: The first step involves installing Grafana, a powerful tool for creating dashboards and visualizing data. Grafana is often used for monitoring metrics collected by Prometheus. The installation can be configured for a single machine or multiple machines, depending on your requirements.
+2. **Prometheus Installation**: The second step is the installation of Prometheus, an open-source monitoring and alerting system. It is frequently used for collecting and storing metrics from various sources. The playbook provides the ability to configure multiple jobs for Prometheus and is idempotent, meaning you can run it multiple times to update your configurations.
+3. **Apache2 Installation with Grafana Configuration**: A significant portion of this playbook is dedicated to installing Apache2, a popular web server, along with a specific configuration for Grafana. This is recommended when exposing Grafana over the Internet. Using Apache2 as a reverse proxy in front of Grafana enhances security and performance.
+
+To facilitate customization and adaptation to your specific requirements, the playbook uses boolean variables. You can set these variables in configuration files or directly in host and playbook variables. For example, you can set `inv_install_apache: true` to indicate your desire to install Apache2.
+
+A common use case for this playbook is deploying a Prometheus cluster with federation capabilities, enabling data collection from multiple sources. Whether you need to install these components on a single machine or a group of machines, this Ansible playbook offers a flexible solution to meet your needs.
 
 ## Deployment diagramm
+
+![](./assets/Ansible-Playbook-Labocbz-Deploy-Grafana-And-Prometheus.drawio.svg)
+
+Here is a possible deployment example using this playbook. We can install the "Prometheus and Grafana" service on two main subsystems: Prometheus and Grafana.
+* The Prometheus subsystem is an abstraction of a Prometheus cluster based on federation functionality. A Prometheus server can scrape data from other servers, consolidating all the data into a single endpoint. In our example, one server federates data from two other servers, which, in turn, collect metric data from additional servers.
+* The Grafana subsystem consists of an Apache2 server as a reverse proxy and the Grafana server. In our example, Apache2 is installed on the same server as Grafana to add an extra layer of security to the service (QoS, WAF, LDAP Auth, SSL/TLS, mTLS, etc.).
+
+All communications are encrypted and sometimes authenticated through client certificates and passwords (mTLS and Basic Auth for Prometheus).
 
 ## Tests and simulations
 
