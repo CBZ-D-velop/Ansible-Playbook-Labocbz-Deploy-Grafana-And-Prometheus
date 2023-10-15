@@ -147,7 +147,7 @@
 
   tasks:
 
-    - name: "Install Grafana"
+    - name: "Install Apache2"
       when: inv_install_apache | default(false)
       block:
         - name: "Include labocbz.prepare_host"
