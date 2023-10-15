@@ -34,7 +34,6 @@
   tasks:
 
     - name: "Import cryptographic content if needed (cert)"
-      run_once: yes
       loop: "{{ inv_prometheus_cert_bundles }}"
       loop_control:
         loop_var: bundle
@@ -47,7 +46,6 @@
         mode: 0700
 
     - name: "Import cryptographic content if needed (CA)"
-      run_once: yes
       loop: "{{ inv_prometheus_cert_bundles }}"
       loop_control:
         loop_var: bundle
@@ -65,7 +63,6 @@
   tasks:
 
     - name: "Import cryptographic content if needed (cert)"
-      run_once: yes
       loop: "{{ inv_grafana_cert_bundles }}"
       loop_control:
         loop_var: bundle
@@ -78,7 +75,6 @@
         mode: 0700
 
     - name: "Import cryptographic content if needed (CA)"
-      run_once: yes
       loop: "{{ inv_grafana_cert_bundles }}"
       loop_control:
         loop_var: bundle

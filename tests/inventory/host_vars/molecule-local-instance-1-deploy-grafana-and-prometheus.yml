@@ -1,2 +1,70 @@
 ---
 ansible_ssh_port: 22
+
+inv_install_prometheus: true
+inv_install_grafana: true
+inv_install_apache: true
+
+install_prometheus_instancename: "molecule-local-instance-1-deploy-grafana-and-prometheus"
+
+install_prometheus_federate_collector_hosts:
+  #- "molecule-local-instance-1-deploy-grafana-and-prometheus"
+  - "molecule-local-instance-2-deploy-grafana-and-prometheus"
+  - "molecule-local-instance-3-deploy-grafana-and-prometheus"
+
+install_prometheus_federate_collector: true
+
+inv_add_apache_confs_http_listen_port: "{{ inv_install_apache_http_listen_port }}"
+inv_add_apache_confs_https_listen_port: "{{ inv_install_apache_https_listen_port }}"
+
+inv_add_apache_confs_webmaster: "your.webmaster@domain.tld"
+inv_add_apache_confs_request_body: 0
+inv_add_apache_confs_security_body_limit: 1024000000
+
+inv_add_apache_confs_ssl_files_path: "/etc/apache2/ssl"
+inv_add_apache_confs_conf_path: "/etc/apache2/sites-available"
+inv_add_apache_confs_base_document_root: "/var/www/html"
+
+inv_add_apache_confs_configurations_cert_bundles:
+  - name: "My-Local-Ansible-Root-CA.pem.crt"
+    type: "CA"
+    src: "/tmp/My-Local-Ansible-Root-CA.pem.crt"
+
+  - name: "My-Local-Ansible-Intermediate-CA-1.pem.crt"
+    type: "CA"
+    src: "/tmp/My-Local-Ansible-Intermediate-CA-1.pem.crt"
+
+  - name: "My-Local-Ansible-Intermediate-CA-2.pem.crt"
+    type: "CA"
+    src: "/tmp/My-Local-Ansible-Intermediate-CA-2.pem.crt"
+
+  - name: "my-grafana-server.domain.tld"
+    type: "cert"
+    src: "/tmp/my-grafana-server.domain.tld.zip"
+    dest: "{{ inv_add_apache_confs_ssl_files_path }}"
+    #src_user: "myUser"
+    #src_password: "secretPassword"
+    dest_user: "root"
+    dest_group: "root"
+    dest_mode: "0700"
+
+inv_add_apache_confs_configurations:
+  - server:
+      name: "my-grafana-server.domain.tld"
+      aliases:
+        - "localhost"
+        - "127.0.0.1"
+      webmaster: "{{ inv_add_apache_confs_webmaster }}"
+    ssl:
+      enabled: true
+      key: "{{ inv_add_apache_confs_ssl_files_path }}/my-grafana-server.domain.tld/my-grafana-server.domain.tld.pem.key"
+      crt: "{{ inv_add_apache_confs_ssl_files_path }}/my-grafana-server.domain.tld/my-grafana-server.domain.tld.pem.crt"
+    proxy:
+      url: "https://127.0.0.1:3000"
+      pass: "/"
+    security:
+      disabled: false
+      request_body: 4096000
+      sec_rules_remove_by_id:
+        - 949110
+      #  - 933120
