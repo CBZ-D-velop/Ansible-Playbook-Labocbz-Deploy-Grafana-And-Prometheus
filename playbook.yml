@@ -133,7 +133,6 @@
           ansible.builtin.include_role:
             name: "labocbz.install_grafana"
 
-
 - name: "Install Apache2"
   hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
