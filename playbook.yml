@@ -3,7 +3,6 @@
   hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
   remote_user: root
-  strategy: free
   become: true
   become_method: sudo
   become_user: root
@@ -62,8 +61,11 @@
             install_prometheus_basic_auth_password: "{{ inv_install_prometheus_basic_auth_password }}"
             install_prometheus_basic_auth_password_hash: "{{ inv_install_prometheus_basic_auth_password_hash }}"
             install_prometheus_instancename: "{{ inv_install_prometheus_clustername }}"
+            install_prometheus_clustername: "{{ inv_install_prometheus_clustername }}"
             install_prometheus_federate_collector_interval: "{{ inv_install_prometheus_federate_collector_interval }}"
             install_prometheus_jobs: "{{ inv_install_prometheus_jobs }}"
+            install_prometheus_federate_collector: "{{ inv_install_prometheus_federate_collector }}"
+            install_prometheus_federate_collector_hosts: "{{ inv_install_prometheus_federate_collector_hosts }}"
           ansible.builtin.include_role:
             name: "labocbz.install_prometheus"
 
