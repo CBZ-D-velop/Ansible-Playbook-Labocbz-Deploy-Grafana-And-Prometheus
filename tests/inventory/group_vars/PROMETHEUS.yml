@@ -46,6 +46,7 @@ inv_install_prometheus_basic_auth_password: "admin"
 inv_install_prometheus_basic_auth_password_hash: "$2a$10$0M5Kx/KYWNIExB1AfP0wDuMT6hGkkNOcxLtLRWV6nfSZWfonGb69W"
 
 inv_install_prometheus_clustername: "my-prometheus-cluster.domain.tld"
+inv_install_prometheus_instancename: "{{ inventory_hostname}}"
 
 inv_install_prometheus_federate_collector_interval: "15s"
 
