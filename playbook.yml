@@ -216,3 +216,11 @@
             add_apache_confs_configurations: "{{ inv_add_apache_confs_configurations }}"
           ansible.builtin.include_role:
             name: "labocbz.add_apache_confs"
+
+        - name: "Include labocbz.add_logrotate_confs"
+          tags:
+            - "labocbz.add_logrotate_confs"
+          vars:
+            logrotate_configurations: "{{ inv_logrotate_configurations_apache }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_logrotate_confs"

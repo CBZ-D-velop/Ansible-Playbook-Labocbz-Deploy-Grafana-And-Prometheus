@@ -22,3 +22,7 @@
 - name: "labocbz.add_apache_confs"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Add-Apache-Confs.git"
   version: "3.1"
+
+- name: "labocbz.add_logrotate_confs"
+  src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Add-Logrotate-Confs.git"
+  version: "2.0"
