@@ -30,6 +30,9 @@ inv_install_prometheus_instancename: "prom-1"
 
 inv_install_prometheus_federate_collector_interval: "15s"
 
+inv_install_prometheus_logrotate_configurations:
+  - "prometheus"
+
 inv_install_prometheus_jobs:
   - name: "My Molecule instances (on SSL + Auth)"
     basic_auth: true
