@@ -69,6 +69,14 @@
           ansible.builtin.include_role:
             name: "labocbz.install_prometheus"
 
+        - name: "Include labocbz.add_logrotate_confs"
+          tags:
+            - "labocbz.add_logrotate_confs"
+          vars:
+            logrotate_configurations: "{{ inv_install_prometheus_logrotate_configurations }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_logrotate_confs"
+
 - name: "Install Grafana"
   hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
