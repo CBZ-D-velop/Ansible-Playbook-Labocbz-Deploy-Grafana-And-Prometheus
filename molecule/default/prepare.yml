@@ -37,7 +37,7 @@
       tags:
         - "labocbz.prepare_host"
       vars:
-        prepare_host_users: "{{ inv_prometheus_prepare_host_users }}"
+        prepare_host_system_users: "{{ inv_prepare_host_prometheus_system_users }}"
       ansible.builtin.include_role:
         name: "labocbz.prepare_host"
 
@@ -74,7 +74,7 @@
       tags:
         - "labocbz.prepare_host"
       vars:
-        grafana_prepare_host_users: "{{ inv_grafana_prepare_host_users }}"
+        prepare_host_system_users: "{{ inv_prepare_host_grafana_system_users }}"
       ansible.builtin.include_role:
         name: "labocbz.prepare_host"
 

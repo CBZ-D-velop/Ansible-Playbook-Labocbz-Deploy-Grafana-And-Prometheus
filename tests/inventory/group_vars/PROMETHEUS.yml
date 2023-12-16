@@ -1,7 +1,6 @@
 ---
-
-inv_prometheus_prepare_host_users:
-  - login: "root"
+inv_prepare_host_prometheus_system_users:
+  - login: "prometheus"
     group: "prometheus"
 
 inv_install_prometheus_config_path: "/etc/prometheus"
@@ -87,6 +86,6 @@ inv_prometheus_cert_bundles:
     dest: "/etc/prometheus/ssl"
     #src_user: "myUser"
     #src_password: "secretPassword"
-    dest_user: "root"
+    dest_user: "prometheus"
     dest_group: "prometheus"
     dest_mode: "0700"
