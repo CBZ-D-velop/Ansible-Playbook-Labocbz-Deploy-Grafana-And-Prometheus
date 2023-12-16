@@ -18,7 +18,7 @@
           tags:
             - "labocbz.prepare_host"
           vars:
-            prepare_host_users: "{{ inv_prometheus_prepare_host_users }}"
+            prepare_host_system_users: "{{ inv_prepare_host_prometheus_system_users }}"
           ansible.builtin.include_role:
             name: "labocbz.prepare_host"
 
@@ -97,7 +97,7 @@
           tags:
             - "labocbz.prepare_host"
           vars:
-            prepare_host_users: "{{ inv_grafana_prepare_host_users }}"
+            prepare_host_system_users: "{{ inv_prepare_host_grafana_system_users }}"
           ansible.builtin.include_role:
             name: "labocbz.prepare_host"
 
@@ -143,6 +143,14 @@
           ansible.builtin.include_role:
             name: "labocbz.install_grafana"
 
+        - name: "Include labocbz.add_logrotate_confs"
+          tags:
+            - "labocbz.add_logrotate_confs"
+          vars:
+            logrotate_configurations: "{{ inv_install_grafana_logrotate_configurations }}"
+          ansible.builtin.include_role:
+            name: "labocbz.add_logrotate_confs"
+
 - name: "Install Apache2"
   hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
@@ -162,6 +170,8 @@
         - name: "Include labocbz.prepare_host"
           tags:
             - "labocbz.prepare_host"
+          vars:
+            prepare_host_system_users: "{{ inv_prepare_host_apache_system_users }}"
           ansible.builtin.include_role:
             name: "labocbz.prepare_host"
 

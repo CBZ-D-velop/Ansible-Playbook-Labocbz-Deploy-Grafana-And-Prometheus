@@ -116,12 +116,17 @@ Here you can put your change to keep a trace of your work and decisions.
 * Playbook deploy Prometheus
 * Playbook deploy Grafana
 * Playbook deploy Apache2 as front reverse proxy
-* mTLS from Prom => Prom
-* mTLS From Graf => Preom
-* TLS from Apa => Graf
-* TLS from Client => Apa
+* mTLS from Prometheus => Prometheus
+* mTLS From Graf => Prometheus
+* TLS from apache2 => Graf
+* TLS from Client => apache2
 * Why use Apache2 ? Because you can set secutiry with WAF, LDAP Auth, etc. as primary Auth gate
 * Groups are required for vars, but deployment is done with boolean vars, you can deploy Prometheus cluster only, or just Grafana, or just Apache2, or both, etc. Just use boolean vars as inv_install_apache to deploy Apache2 on the host you wanted, in test case: molecule-1
+
+### 2023-12-16: System users
+
+* Role can now use system users and address groups
+* Updated with 10 years cert
 
 ## Authors
 

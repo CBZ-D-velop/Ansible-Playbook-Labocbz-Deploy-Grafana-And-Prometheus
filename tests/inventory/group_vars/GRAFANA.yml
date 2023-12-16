@@ -1,8 +1,11 @@
 ---
 
-inv_grafana_prepare_host_users:
-  - login: "root"
+inv_prepare_host_grafana_system_users:
+  - login: "grafana"
     group: "grafana"
+
+inv_install_grafana_logrotate_configurations:
+  - "grafana"
 
 inv_install_grafana_app_mode: "production"
 inv_install_grafana_data: "/var/lib/grafana"
@@ -39,6 +42,6 @@ inv_grafana_cert_bundles:
     dest: "/etc/grafana/ssl"
     #src_user: "myUser"
     #src_password: "secretPassword"
-    dest_user: "root"
+    dest_user: "grafana"
     dest_group: "grafana"
     dest_mode: "0700"

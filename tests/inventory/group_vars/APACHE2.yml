@@ -1,5 +1,11 @@
 # From inventory
 ---
+inv_install_apache: true
+
+inv_prepare_host_apache_system_users:
+  - login: "www-data"
+    group: "www-data"
+
 inv_install_apache_https_listen_port: 443
 inv_install_apache_http_listen_port: 80
 
@@ -30,3 +36,43 @@ inv_install_apache_remove_all_vhosts: false
 inv_logrotate_configurations_apache:
   - "apache2"
   - "modsecurity"
+
+inv_add_apache_confs_configurations_cert_bundles:
+  - name: "My-Local-Ansible-Intermediate-CA-1.pem.crt"
+    type: "CA"
+    src: "/tmp/My-Local-Ansible-Intermediate-CA-1.pem.crt"
+
+  - name: "My-Local-Ansible-Intermediate-CA-2.pem.crt"
+    type: "CA"
+    src: "/tmp/My-Local-Ansible-Intermediate-CA-2.pem.crt"
+
+  - name: "my-grafana-server.domain.tld"
+    type: "cert"
+    src: "/tmp/my-grafana-server.domain.tld.zip"
+    dest: "/etc/apache2/ssl"
+    #src_user: "myUser"
+    #src_password: "secretPassword"
+    dest_user: "www-data"
+    dest_group: "www-data"
+    dest_mode: "0700"
+
+inv_add_apache_confs_configurations:
+  - server:
+      name: "my-grafana-server.domain.tld"
+      aliases:
+        - "localhost"
+        - "127.0.0.1"
+      webmaster: "{{ inv_add_apache_confs_webmaster }}"
+    ssl:
+      enabled: true
+      key: "{{ inv_add_apache_confs_ssl_files_path }}/my-grafana-server.domain.tld/my-grafana-server.domain.tld.pem.key"
+      crt: "{{ inv_add_apache_confs_ssl_files_path }}/my-grafana-server.domain.tld/my-grafana-server.domain.tld.pem.crt"
+    proxy:
+      url: "https://127.0.0.1:3000"
+      pass: "/"
+    security:
+      disabled: false
+      #request_body: 4096000
+      #sec_rules_remove_by_id:
+      #  - 920280
+      #  - 949110
