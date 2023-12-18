@@ -4,7 +4,7 @@ inv_prepare_host_grafana_system_users:
   - login: "grafana"
     group: "grafana"
 
-inv_install_grafana_logrotate_configurations:
+inv_logrotate_grafana_configurations:
   - "grafana"
 
 inv_install_grafana_app_mode: "production"
