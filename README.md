@@ -128,6 +128,11 @@ Here you can put your change to keep a trace of your work and decisions.
 * Role can now use system users and address groups
 * Updated with 10 years cert
 
+### 2023-12-18: Logs and Reorganization
+
+* Now you have to install Apache2 on the same host as Grafana
+* Iptables is used for blocking acces to Grafana without Apache2
+
 ## Authors
 
 * Lord Robin Crombez

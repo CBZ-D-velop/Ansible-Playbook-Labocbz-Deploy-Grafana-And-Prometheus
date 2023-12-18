@@ -1,139 +1,117 @@
 # Don't forget to keep this file updated
 # molecule/<scenario>/verify.yml
-- name: "Verify"
+- name: "Verify PROMETHEUS"
   hosts: "all:&PROMETHEUS"
   gather_facts: false
   tasks:
 
-    - name: "Get Prometheus service current state"
-      register: inv_install_prometheus_service_status
-      failed_when: not inv_install_prometheus_service_status.status.ActiveState == 'active'
-      ansible.builtin.systemd:
-        name: "prometheus"
-
-    - name: "Check endpoint on HTTP"
-      when: not (inv_install_prometheus_ssl | default(false))
+    - name: "Verify PROMETHEUS"
+      when: inv_install_prometheus | default(false)
       block:
-        - name: "Check Prometheus web UI HTTPS / no Auth"
-          when: not (inv_install_prometheus_basic_auth | default(false))
-          register: prometheus_infos
-          failed_when: prometheus_infos.status != 200
-          changed_when: prometheus_infos.status != 200
-          ansible.builtin.uri:
-            url: "http://{{ inventory_hostname }}:{{ inv_install_prometheus_port }}"
-            method: GET
-            headers:
-              Content-Type: "application/json"
+        - name: "Get Prometheus service current state"
+          register: inv_install_prometheus_service_status
+          failed_when: not inv_install_prometheus_service_status.status.ActiveState == 'active'
+          ansible.builtin.systemd:
+            name: "prometheus"
 
-        - name: "Check Prometheus web UI HTTPS / Auth"
-          when: inv_install_prometheus_basic_auth | default(false)
-          register: prometheus_infos
-          failed_when: prometheus_infos.status != 200
-          changed_when: prometheus_infos.status != 200
-          ansible.builtin.uri:
-            url: "http://{{ inventory_hostname }}:{{ inv_install_prometheus_port }}"
-            method: GET
-            user: "{{ inv_install_prometheus_basic_auth_login }}"
-            password: "{{ inv_install_prometheus_basic_auth_password }}"
-            headers:
-              Content-Type: "application/json"
-            #client_cert: "{{ inv_inv_install_elasticsearch_ssl_crt }}"
-            #client_key: "{{ inv_inv_install_elasticsearch_ssl_key }}"
-            force_basic_auth: yes
+        - name: "Check endpoint on HTTP"
+          when: not (inv_install_prometheus_ssl | default(false))
+          block:
+            - name: "Check Prometheus web UI HTTPS / no Auth"
+              when: not (inv_install_prometheus_basic_auth | default(false))
+              register: prometheus_infos
+              failed_when: prometheus_infos.status != 200
+              changed_when: prometheus_infos.status != 200
+              ansible.builtin.uri:
+                url: "http://{{ inventory_hostname }}:{{ inv_install_prometheus_port }}"
+                method: GET
+                headers:
+                  Content-Type: "application/json"
 
-    - name: "Check endpoint on HTTPS"
-      when: inv_install_prometheus_ssl | default(false)
-      block:
-        - name: "Check Prometheus web UI HTTPS / no Auth"
-          when: not (inv_install_prometheus_basic_auth | default(false))
-          register: prometheus_infos
-          failed_when: prometheus_infos.status != 200
-          changed_when: prometheus_infos.status != 200
-          ansible.builtin.uri:
-            url: "https://{{ inventory_hostname }}:{{ inv_install_prometheus_port }}"
-            method: GET
-            headers:
-              Content-Type: "application/json"
+            - name: "Check Prometheus web UI HTTPS / Auth"
+              when: inv_install_prometheus_basic_auth | default(false)
+              register: prometheus_infos
+              failed_when: prometheus_infos.status != 200
+              changed_when: prometheus_infos.status != 200
+              ansible.builtin.uri:
+                url: "http://{{ inventory_hostname }}:{{ inv_install_prometheus_port }}"
+                method: GET
+                user: "{{ inv_install_prometheus_basic_auth_login }}"
+                password: "{{ inv_install_prometheus_basic_auth_password }}"
+                headers:
+                  Content-Type: "application/json"
+                #client_cert: "{{ inv_inv_install_elasticsearch_ssl_crt }}"
+                #client_key: "{{ inv_inv_install_elasticsearch_ssl_key }}"
+                force_basic_auth: yes
 
-        - name: "Check Prometheus web UI HTTPS / Auth"
-          when: inv_install_prometheus_basic_auth | default(false)
-          register: prometheus_infos
-          failed_when: prometheus_infos.status != 200
-          changed_when: prometheus_infos.status != 200
-          ansible.builtin.uri:
-            url: "https://{{ inventory_hostname }}:{{ inv_install_prometheus_port }}"
-            method: GET
-            user: "{{ inv_install_prometheus_basic_auth_login }}"
-            password: "{{ inv_install_prometheus_basic_auth_password }}"
-            headers:
-              Content-Type: "application/json"
-            #client_cert: "{{ inv_inv_install_elasticsearch_ssl_crt }}"
-            #client_key: "{{ inv_inv_install_elasticsearch_ssl_key }}"
-            force_basic_auth: yes
+        - name: "Check endpoint on HTTPS"
+          when: inv_install_prometheus_ssl | default(false)
+          block:
+            - name: "Check Prometheus web UI HTTPS / no Auth"
+              when: not (inv_install_prometheus_basic_auth | default(false))
+              register: prometheus_infos
+              failed_when: prometheus_infos.status != 200
+              changed_when: prometheus_infos.status != 200
+              ansible.builtin.uri:
+                url: "https://{{ inventory_hostname }}:{{ inv_install_prometheus_port }}"
+                method: GET
+                headers:
+                  Content-Type: "application/json"
+
+            - name: "Check Prometheus web UI HTTPS / Auth"
+              when: inv_install_prometheus_basic_auth | default(false)
+              register: prometheus_infos
+              failed_when: prometheus_infos.status != 200
+              changed_when: prometheus_infos.status != 200
+              ansible.builtin.uri:
+                url: "https://{{ inventory_hostname }}:{{ inv_install_prometheus_port }}"
+                method: GET
+                user: "{{ inv_install_prometheus_basic_auth_login }}"
+                password: "{{ inv_install_prometheus_basic_auth_password }}"
+                headers:
+                  Content-Type: "application/json"
+                #client_cert: "{{ inv_inv_install_elasticsearch_ssl_crt }}"
+                #client_key: "{{ inv_inv_install_elasticsearch_ssl_key }}"
+                force_basic_auth: yes
 
 # Don't forget to keep this file updated
 # molecule/<scenario>/verify.yml
-- name: "Verify"
+- name: "Verify GRAFANA"
   hosts: "all:&GRAFANA"
   gather_facts: false
   tasks:
 
-    - name: "Get Grafana service current state"
-      register: install_grafana_service_status
-      failed_when: not install_grafana_service_status.status.ActiveState == 'active'
-      ansible.builtin.systemd:
-        name: "grafana-server"
+    - name: "Verify GRAFANA"
+      when: inv_install_grafana | default(false)
+      block:
+        - name: "Get Grafana service current state"
+          register: install_grafana_service_status
+          failed_when: not install_grafana_service_status.status.ActiveState == 'active'
+          ansible.builtin.systemd:
+            name: "grafana-server"
 
-    - name: "Check Grafana connectivity"
-      ansible.builtin.wait_for:
-        host: "127.0.0.1"
-        port: "{{ inv_install_grafana_http_port }}"
-        timeout: 120
+        - name: "Check Grafana connectivity"
+          ansible.builtin.wait_for:
+            host: "127.0.0.1"
+            port: "{{ inv_install_grafana_http_port }}"
+            timeout: 120
 
 # Don't forget to keep this file updated
 # molecule/<scenario>/verify.yml
-- name: "Verify"
+- name: "Verify APACHE2"
   hosts: "all:&APACHE2"
   gather_facts: false
   tasks:
 
-    - name: "Get Apache2 service current state"
-      register: install_apache_service_status
-      failed_when: not install_apache_service_status.status.ActiveState == 'active'
-      ansible.builtin.systemd:
-        name: "apache2"
-
-    - name: "Check Apache2 folders and conf"
-      loop:
-        - "/etc/apache2/apache2.conf"
-        - "/etc/apache2/ports.conf"
-      loop_control:
-        loop_var: folder_path
-      register: folder_check
-      failed_when: not folder_check.stat.exists
-      ansible.builtin.stat:
-        path: "{{ folder_path }}"
-
-    - name: "Check Apache2 HTTP connectivity"
-      ansible.builtin.wait_for:
-        host: "{{ inventory_hostname }}"
-        port: "{{ inv_install_apache_http_listen_port }}"
-        timeout: 120
-
-    - name: "Check Apache2 HTTPS connectivity"
-      ansible.builtin.wait_for:
-        host: "{{ inventory_hostname }}"
-        port: "{{ inv_install_apache_https_listen_port }}"
-        timeout: 120
-
-    - name: "Get Apache2 service current state"
-      register: apache_service_status
-      failed_when: not apache_service_status.status.ActiveState == 'active'
-      ansible.builtin.systemd:
-        name: "apache2"
-
-    - name: "Check Apache2 default configuration"
+    - name: "Verify APACHE2"
+      when: inv_install_apache | default(false)
       block:
+        - name: "Get Apache2 service current state"
+          register: install_apache_service_status
+          failed_when: not install_apache_service_status.status.ActiveState == 'active'
+          ansible.builtin.systemd:
+            name: "apache2"
+
         - name: "Check Apache2 folders and conf"
           loop:
             - "/etc/apache2/apache2.conf"
@@ -145,63 +123,94 @@
           ansible.builtin.stat:
             path: "{{ folder_path }}"
 
-        - name: "Check Apache2 HTTP and conf"
-          loop: "{{ inv_add_apache_confs_configurations }}"
-          loop_control:
-            loop_var: vhost
-          register: folder_check
-          failed_when: not folder_check.stat.exists
-          ansible.builtin.stat:
-            path: "{{ inv_add_apache_confs_conf_path }}/{{ vhost.server.name }}-HTTP.conf"
-
-        - name: "Check Apache2 HTTPS and conf"
-          loop: "{{ inv_add_apache_confs_configurations }}"
-          loop_control:
-            loop_var: vhost
-          register: folder_check
-          when: vhost.ssl
-          failed_when: not folder_check.stat.exists
-          ansible.builtin.stat:
-            path: "{{ inv_add_apache_confs_conf_path }}/{{ vhost.server.name }}-HTTPS.conf"
-
-        - name: "Check HTTPS conf: certs"
-          loop: "{{ inv_add_apache_confs_configurations }}"
-          loop_control:
-            loop_var: vhost
-          register: folder_check
-          when: vhost.ssl.enabled | default(false)
-          failed_when: not folder_check.stat.exists
-          ansible.builtin.stat:
-            path: "{{ vhost.ssl.crt }}"
-
-        - name: "Check HTTPS conf: keys"
-          loop: "{{ inv_add_apache_confs_configurations }}"
-          loop_control:
-            loop_var: vhost
-          register: folder_check
-          when: vhost.ssl.enabled | default(false)
-          failed_when: not folder_check.stat.exists
-          ansible.builtin.stat:
-            path: "{{ vhost.ssl.key }}"
-
-    - name: "Check Apache2 webserver"
-      block:
-        - name: "Check Apache2 connectivity"
+        - name: "Check Apache2 HTTP connectivity"
           ansible.builtin.wait_for:
             host: "{{ inventory_hostname }}"
-            port: "{{ inv_add_apache_confs_http_listen_port }}"
+            port: "{{ inv_install_apache_http_listen_port }}"
             timeout: 120
 
-        - name: "Check default vhost on HTTP"
-          register: result
-          failed_when: not (result.status != 200 or result.status == -1)
-          ansible.builtin.uri:
-            url: "http://{{ inventory_hostname }}:{{ inv_add_apache_confs_http_listen_port }}/"
-            method: "GET"
+        - name: "Check Apache2 HTTPS connectivity"
+          ansible.builtin.wait_for:
+            host: "{{ inventory_hostname }}"
+            port: "{{ inv_install_apache_https_listen_port }}"
+            timeout: 120
 
-        - name: "Check default vhost on HTTPS"
-          register: result
-          failed_when: not (result.status != 200 or result.status == -1)
-          ansible.builtin.uri:
-            url: "https://{{ inventory_hostname }}:{{ inv_add_apache_confs_https_listen_port }}/"
-            method: "GET"
+        - name: "Get Apache2 service current state"
+          register: apache_service_status
+          failed_when: not apache_service_status.status.ActiveState == 'active'
+          ansible.builtin.systemd:
+            name: "apache2"
+
+        - name: "Check Apache2 default configuration"
+          block:
+            - name: "Check Apache2 folders and conf"
+              loop:
+                - "/etc/apache2/apache2.conf"
+                - "/etc/apache2/ports.conf"
+              loop_control:
+                loop_var: folder_path
+              register: folder_check
+              failed_when: not folder_check.stat.exists
+              ansible.builtin.stat:
+                path: "{{ folder_path }}"
+
+            - name: "Check Apache2 HTTP and conf"
+              loop: "{{ inv_add_apache_confs_configurations }}"
+              loop_control:
+                loop_var: vhost
+              register: folder_check
+              failed_when: not folder_check.stat.exists
+              ansible.builtin.stat:
+                path: "{{ inv_add_apache_confs_conf_path }}/{{ vhost.server.name }}-HTTP.conf"
+
+            - name: "Check Apache2 HTTPS and conf"
+              loop: "{{ inv_add_apache_confs_configurations }}"
+              loop_control:
+                loop_var: vhost
+              register: folder_check
+              when: vhost.ssl
+              failed_when: not folder_check.stat.exists
+              ansible.builtin.stat:
+                path: "{{ inv_add_apache_confs_conf_path }}/{{ vhost.server.name }}-HTTPS.conf"
+
+            - name: "Check HTTPS conf: certs"
+              loop: "{{ inv_add_apache_confs_configurations }}"
+              loop_control:
+                loop_var: vhost
+              register: folder_check
+              when: vhost.ssl.enabled | default(false)
+              failed_when: not folder_check.stat.exists
+              ansible.builtin.stat:
+                path: "{{ vhost.ssl.crt }}"
+
+            - name: "Check HTTPS conf: keys"
+              loop: "{{ inv_add_apache_confs_configurations }}"
+              loop_control:
+                loop_var: vhost
+              register: folder_check
+              when: vhost.ssl.enabled | default(false)
+              failed_when: not folder_check.stat.exists
+              ansible.builtin.stat:
+                path: "{{ vhost.ssl.key }}"
+
+        - name: "Check Apache2 webserver"
+          block:
+            - name: "Check Apache2 connectivity"
+              ansible.builtin.wait_for:
+                host: "{{ inventory_hostname }}"
+                port: "{{ inv_add_apache_confs_http_listen_port }}"
+                timeout: 120
+
+            - name: "Check default vhost on HTTP"
+              register: result
+              failed_when: not (result.status != 200 or result.status == -1)
+              ansible.builtin.uri:
+                url: "http://{{ inventory_hostname }}:{{ inv_add_apache_confs_http_listen_port }}/"
+                method: "GET"
+
+            - name: "Check default vhost on HTTPS"
+              register: result
+              failed_when: not (result.status != 200 or result.status == -1)
+              ansible.builtin.uri:
+                url: "https://{{ inventory_hostname }}:{{ inv_add_apache_confs_https_listen_port }}/"
+                method: "GET"

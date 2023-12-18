@@ -2,12 +2,9 @@
 - name: "Install Prometheus"
   hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
-  remote_user: root
   become: true
   become_method: sudo
   become_user: root
-  tags:
-    - "labocbz.install_prometheus"
 
   tasks:
 
@@ -73,20 +70,16 @@
           tags:
             - "labocbz.add_logrotate_confs"
           vars:
-            logrotate_configurations: "{{ inv_install_prometheus_logrotate_configurations }}"
+            logrotate_configurations: "{{ inv_logrotate_prometheus_configurations }}"
           ansible.builtin.include_role:
             name: "labocbz.add_logrotate_confs"
 
 - name: "Install Grafana"
   hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
-  remote_user: root
-  strategy: free
   become: true
   become_method: sudo
   become_user: root
-  tags:
-    - "labocbz.install_grafana"
 
   tasks:
 
@@ -147,22 +140,9 @@
           tags:
             - "labocbz.add_logrotate_confs"
           vars:
-            logrotate_configurations: "{{ inv_install_grafana_logrotate_configurations }}"
+            logrotate_configurations: "{{ inv_logrotate_grafana_configurations }}"
           ansible.builtin.include_role:
             name: "labocbz.add_logrotate_confs"
-
-- name: "Install Apache2"
-  hosts: "{{ tower_env | default([]) }}"
-  gather_facts: true
-  remote_user: root
-  strategy: free
-  become: true
-  become_method: sudo
-  become_user: root
-  tags:
-    - "labocbz.install_apache"
-
-  tasks:
 
     - name: "Install Apache2"
       when: inv_install_apache | default(false)
@@ -239,6 +219,15 @@
           tags:
             - "labocbz.add_logrotate_confs"
           vars:
-            logrotate_configurations: "{{ inv_logrotate_configurations_apache }}"
+            logrotate_configurations: "{{ inv_logrotate_apache_configurations }}"
           ansible.builtin.include_role:
             name: "labocbz.add_logrotate_confs"
+
+        - name: "Block all trafic from other hosts on port Grafana (disable acces to Grafana without Apache2)"
+          ansible.builtin.iptables:
+            chain: "INPUT"
+            protocol: "tcp"
+            destination_port: "{{ inv_install_grafana_http_port }}"
+            jump: "DROP"
+            source: "! 127.0.0.1"
+            comment: "Force external user to use Apache2"
