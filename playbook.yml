@@ -1,5 +1,4 @@
 ---
----
 - name: "Install Prometheus"
   hosts: "{{ tower_env | default([]) }}"
   gather_facts: true
@@ -240,6 +239,6 @@
           tags:
             - "labocbz.add_logrotate_confs"
           vars:
-            logrotate_configurations: "{{ inv_logrotate_apache_configurations }}"
+            logrotate_configurations: "{{ inv_logrotate_configurations_apache }}"
           ansible.builtin.include_role:
             name: "labocbz.add_logrotate_confs"
