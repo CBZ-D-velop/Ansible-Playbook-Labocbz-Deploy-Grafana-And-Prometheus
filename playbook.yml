@@ -52,6 +52,7 @@
             install_prometheus_scrape_interval: "{{ inv_install_prometheus_scrape_interval }}"
             install_prometheus_evaluation_interval: "{{ inv_install_prometheus_evaluation_interval }}"
             install_prometheus_loglevel: "{{ inv_install_prometheus_loglevel }}"
+            install_prometheus_retention_time: "{{ inv_install_prometheus_retention_time }}"
             install_prometheus_ssl: "{{ inv_install_prometheus_ssl }}"
             install_prometheus_ssl_key: "{{ inv_install_prometheus_ssl_key }}"
             install_prometheus_ssl_crt: "{{ inv_install_prometheus_ssl_crt }}"
