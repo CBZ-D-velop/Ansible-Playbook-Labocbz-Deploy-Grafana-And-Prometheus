@@ -133,6 +133,12 @@ Here you can put your change to keep a trace of your work and decisions.
 * Now you have to install Apache2 on the same host as Grafana
 * Iptables is used for blocking acces to Grafana without Apache2
 
+### 2024-03-02: Remastered
+
+* Imported new CICD
+* Rework global on readme
+* Rename of vars __ and refacto
+
 ## Authors
 
 * Lord Robin Crombez

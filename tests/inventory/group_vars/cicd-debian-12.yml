@@ -1,0 +1,35 @@
+---
+inv_install_prometheus__jobs:
+  - name: "My Molecule instances (on SSL + Auth)"
+    basic_auth: true
+    basic_auth_login: "admin"
+    basic_auth_password: "admin"
+    ssl: true
+    ca: "{{ inv_install_prometheus__ssl_path }}/my-prometheus-cluster.domain.tld/ca-chain.pem.crt"
+    targets:
+      - "molecule-cicd-debian-12-instance-1-install-prometheus:{{ inv_install_prometheus__port }}"
+      - "molecule-cicd-debian-12-instance-2-install-prometheus:{{ inv_install_prometheus__port }}"
+      - "molecule-cicd-debian-12-instance-3-install-prometheus:{{ inv_install_prometheus__port }}"
+
+  - name: "My Molecule instances (on SSL)"
+    ssl: true
+    ca: "{{ inv_install_prometheus__ssl_path }}/my-prometheus-cluster.domain.tld/ca-chain.pem.crt"
+    targets:
+      - "molecule-cicd-debian-12-instance-1-install-prometheus:{{ inv_install_prometheus__port }}"
+      - "molecule-cicd-debian-12-instance-2-install-prometheus:{{ inv_install_prometheus__port }}"
+      - "molecule-cicd-debian-12-instance-3-install-prometheus:{{ inv_install_prometheus__port }}"
+
+  - name: "My Molecule instances (on Auth)"
+    basic_auth: true
+    basic_auth_login: "admin"
+    basic_auth_password: "admin"
+    targets:
+      - "molecule-cicd-debian-12-instance-1-install-prometheus:{{ inv_install_prometheus__port }}"
+      - "molecule-cicd-debian-12-instance-2-install-prometheus:{{ inv_install_prometheus__port }}"
+      - "molecule-cicd-debian-12-instance-3-install-prometheus:{{ inv_install_prometheus__port }}"
+
+  - name: "My Molecule instances"
+    targets:
+      - "molecule-cicd-debian-12-instance-1-install-prometheus:{{ inv_install_prometheus__port }}"
+      - "molecule-cicd-debian-12-instance-2-install-prometheus:{{ inv_install_prometheus__port }}"
+      - "molecule-cicd-debian-12-instance-3-install-prometheus:{{ inv_install_prometheus__port }}"

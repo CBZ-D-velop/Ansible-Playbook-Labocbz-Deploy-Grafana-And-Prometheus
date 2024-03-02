@@ -1,28 +1,21 @@
 ---
 - name: "labocbz.prepare_host"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Prepare-Host.git"
-  version: "2.1"
 
 - name: "labocbz.add_certificates"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Add-Certificates.git"
-  version: "2.0"
 
 - name: "labocbz.install_grafana"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-Grafana.git"
-  version: "3.0"
 
 - name: "labocbz.install_prometheus"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-Prometheus.git"
-  version: "3.0"
 
 - name: "labocbz.install_apache"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Install-Apache.git"
-  version: "4.0"
 
 - name: "labocbz.add_apache_confs"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Add-Apache-Confs.git"
-  version: "4.0"
 
 - name: "labocbz.add_logrotate_confs"
   src: "https://github.com/CBZ-D-velop/Ansible-Role-Labocbz-Add-Logrotate-Confs.git"
-  version: "2.2"

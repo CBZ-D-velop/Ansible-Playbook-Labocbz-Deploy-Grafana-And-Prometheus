@@ -2,4 +2,6 @@
 - name: "Include labocbz.deploy_grafana_and_prometheus playbook"
   tags:
       - "labocbz.deploy_grafana_and_prometheus"
+  vars:
+    tower_env: "local"
   ansible.builtin.import_playbook: "../../playbook.yml"

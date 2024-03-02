@@ -1,7 +1,7 @@
 ---
 # if you have any prepararion task
 - name: "Prepare"
-  hosts: "all"
+  hosts: "local"
   gather_facts: true
   tasks:
 
@@ -17,21 +17,16 @@
     - name: "Gather facts from all hosts"
       delegate_to: "{{ item }}"
       delegate_facts: true
-      loop: "{{ groups['all'] }}"
+      loop: "{{ groups['local'] }}"
       ansible.builtin.setup:
 
     - name: "Edit /etc/hosts file to add all hosts"
-      loop: "{{ groups['all'] }}"
+      loop: "{{ groups['local'] }}"
       loop_control:
         loop_var: host
       register: output
       changed_when: output.rc != 0
       ansible.builtin.shell: "echo \"{{ hostvars[host]['ansible_default_ipv4']['address'] }}  {{ host }} # from Molecule\" >> /etc/hosts"
-
-- name: "Prepare Prometheus"
-  hosts: "all:&PROMETHEUS"
-  gather_facts: true
-  tasks:
 
     - name: "Import cryptographic content if needed (cert)"
       loop: "{{ inv_prometheus_cert_bundles }}"
@@ -57,11 +52,6 @@
         group: "root"
         mode: 0700
 
-- name: "Prepare Grafana"
-  hosts: "all:&GRAFANA"
-  gather_facts: true
-  tasks:
-
     - name: "Import cryptographic content if needed (cert)"
       loop: "{{ inv_grafana_cert_bundles }}"
       loop_control:
@@ -79,6 +69,30 @@
       loop_control:
         loop_var: bundle
       when: inv_grafana_cert_bundles is defined and bundle.type == "CA"
+      ansible.builtin.copy:
+        src: "../../tests/certs/{{ bundle.name }}"
+        dest: "/tmp/{{ bundle.name }}"
+        owner: "root"
+        group: "root"
+        mode: 0700
+
+    - name: "Import cryptographic content if needed (cert)"
+      loop: "{{ inv_add_apache_confs__configurations_cert_bundles }}"
+      loop_control:
+        loop_var: bundle
+      when: inv_add_apache_confs__configurations_cert_bundles is defined and bundle.type == "cert"
+      ansible.builtin.copy:
+        src: "../../tests/certs/{{ bundle.name }}.zip"
+        dest: "/tmp/{{ bundle.name }}.zip"
+        owner: "root"
+        group: "root"
+        mode: 0700
+
+    - name: "Import cryptographic content if needed (CA)"
+      loop: "{{ inv_add_apache_confs__configurations_cert_bundles }}"
+      loop_control:
+        loop_var: bundle
+      when: inv_add_apache_confs__configurations_cert_bundles is defined and bundle.type == "CA"
       ansible.builtin.copy:
         src: "../../tests/certs/{{ bundle.name }}"
         dest: "/tmp/{{ bundle.name }}"
