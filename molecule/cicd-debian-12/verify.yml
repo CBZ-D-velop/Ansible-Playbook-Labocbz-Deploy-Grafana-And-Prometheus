@@ -24,7 +24,7 @@
               failed_when: prometheus_infos.status != 200
               changed_when: prometheus_infos.status != 200
               ansible.builtin.uri:
-                url: "http://{{ inventory_hostname }}:{{ inv_install_prometheus__port }}"
+                url: "http://localhost:{{ inv_install_prometheus__port }}"
                 method: GET
                 headers:
                   Content-Type: "application/json"
@@ -35,7 +35,7 @@
               failed_when: prometheus_infos.status != 200
               changed_when: prometheus_infos.status != 200
               ansible.builtin.uri:
-                url: "http://{{ inventory_hostname }}:{{ inv_install_prometheus__port }}"
+                url: "http://localhost:{{ inv_install_prometheus__port }}"
                 method: GET
                 user: "{{ inv_install_prometheus__basic_auth_login }}"
                 password: "{{ inv_install_prometheus__basic_auth_password }}"
@@ -54,7 +54,7 @@
               failed_when: prometheus_infos.status != 200
               changed_when: prometheus_infos.status != 200
               ansible.builtin.uri:
-                url: "https://{{ inventory_hostname }}:{{ inv_install_prometheus__port }}"
+                url: "https://localhost:{{ inv_install_prometheus__port }}"
                 method: GET
                 headers:
                   Content-Type: "application/json"
@@ -65,7 +65,7 @@
               failed_when: prometheus_infos.status != 200
               changed_when: prometheus_infos.status != 200
               ansible.builtin.uri:
-                url: "https://{{ inventory_hostname }}:{{ inv_install_prometheus__port }}"
+                url: "https://localhost:{{ inv_install_prometheus__port }}"
                 method: GET
                 user: "{{ inv_install_prometheus__basic_auth_login }}"
                 password: "{{ inv_install_prometheus__basic_auth_password }}"
@@ -86,7 +86,7 @@
 
         - name: "Check Grafana connectivity"
           ansible.builtin.wait_for:
-            host: "127.0.0.1"
+            host: "localhost"
             port: "{{ inv_install_grafana__http_port }}"
             timeout: 120
 
@@ -112,13 +112,13 @@
 
         - name: "Check Apache2 HTTP connectivity"
           ansible.builtin.wait_for:
-            host: "{{ inventory_hostname }}"
+            host: "localhost"
             port: "{{ inv_install_apache__http_listen_port }}"
             timeout: 120
 
         - name: "Check Apache2 HTTPS connectivity"
           ansible.builtin.wait_for:
-            host: "{{ inventory_hostname }}"
+            host: "localhost"
             port: "{{ inv_install_apache__https_listen_port }}"
             timeout: 120
 
@@ -184,7 +184,7 @@
           block:
             - name: "Check Apache2 connectivity"
               ansible.builtin.wait_for:
-                host: "{{ inventory_hostname }}"
+                host: "localhost"
                 port: "{{ inv_add_apache_confs__http_listen_port }}"
                 timeout: 120
 
@@ -192,12 +192,12 @@
               register: result
               failed_when: not (result.status != 200 or result.status == -1)
               ansible.builtin.uri:
-                url: "http://{{ inventory_hostname }}:{{ inv_add_apache_confs__http_listen_port }}/"
+                url: "http://localhost:{{ inv_add_apache_confs__http_listen_port }}/"
                 method: "GET"
 
             - name: "Check default vhost on HTTPS"
               register: result
               failed_when: not (result.status != 200 or result.status == -1)
               ansible.builtin.uri:
-                url: "https://{{ inventory_hostname }}:{{ inv_add_apache_confs__https_listen_port }}/"
+                url: "https://localhost:{{ inv_add_apache_confs__https_listen_port }}/"
                 method: "GET"
