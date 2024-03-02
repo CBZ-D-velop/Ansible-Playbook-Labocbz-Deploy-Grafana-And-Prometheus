@@ -1,0 +1,15 @@
+---
+ansible_ssh_port: 22
+
+inv_install_prometheus: true
+inv_install_grafana: true
+inv_install_apache: true
+
+inv_install_prometheus__instancename: "molecule-cicd-ubuntu-22-instance-1-deploy-grafana-and-prometheus"
+
+inv_install_prometheus__federate_collector_hosts:
+  #- "molecule-cicd-ubuntu-22-instance-1-deploy-grafana-and-prometheus"
+  - "molecule-cicd-ubuntu-22-instance-2-deploy-grafana-and-prometheus"
+  - "molecule-cicd-ubuntu-22-instance-3-deploy-grafana-and-prometheus"
+
+inv_install_prometheus__federate_collector: true

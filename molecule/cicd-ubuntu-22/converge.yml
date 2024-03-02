@@ -3,5 +3,5 @@
   tags:
       - "labocbz.deploy_grafana_and_prometheus"
   vars:
-    tower_env: "cicd-debian-11"
+    tower_env: "cicd-ubuntu-22"
   ansible.builtin.import_playbook: "../../playbook.yml"

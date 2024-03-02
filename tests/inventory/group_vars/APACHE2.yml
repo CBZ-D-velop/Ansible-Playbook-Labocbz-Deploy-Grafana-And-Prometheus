@@ -2,14 +2,14 @@
 ---
 inv_install_apache: true
 
-inv_prepare_host_apache_system_users:
+inv_prepare_host__apache_system_users:
   - login: "www-data"
     group: "www-data"
 
-inv_install_apache_https_listen_port: 443
-inv_install_apache_http_listen_port: 80
+inv_install_apache__https_listen_port: 443
+inv_install_apache__http_listen_port: 80
 
-inv_install_apache_modules:
+inv_install_apache__modules:
   - "ssl"
   - "rewrite"
   - "proxy"
@@ -21,23 +21,37 @@ inv_install_apache_modules:
   - "headers"
   - "proxy_wstunnel"
 
-inv_install_apache_loglevel: "info"
+inv_install_apache__loglevel: "info"
 
-inv_install_apache_enable_qos: false
-inv_install_apache_enable_security: false
-inv_install_apache_enable_evasive: false
-inv_install_apache_enable_pagespeed: true
-inv_install_apache_enable_prefork: true
+inv_install_apache__enable_qos: false
+inv_install_apache__enable_security: true
+inv_install_apache__enable_evasive: true
+inv_install_apache__enable_pagespeed: true
+inv_install_apache__enable_prefork: true
 
-inv_install_apache_security_core_version: "3.3.0"
-inv_install_apache_security_version: "3.0.10"
-inv_install_apache_remove_all_vhosts: false
+inv_install_apache__security_core_version: "3.3.0"
+inv_install_apache__security_version: "3.0.10"
+inv_install_apache__remove_all_vhosts: false
 
-inv_logrotate_apache_configurations:
+inv_add_logrotate_confs__apache_configurations:
   - "apache2"
   - "modsecurity"
 
-inv_add_apache_confs_configurations_cert_bundles:
+inv_add_apache_confs__http_listen_port: 80
+inv_add_apache_confs__https_listen_port: 443
+
+inv_add_apache_confs__apache_group: "www-data"
+inv_add_apache_confs__apache_user: "www-data"
+
+inv_add_apache_confs__webmaster: "your.webmaster@domain.tld"
+inv_add_apache_confs__request_body: 0
+inv_add_apache_confs__security_body_limit: 1024000000
+
+inv_add_apache_confs__ssl_files_path: "/etc/apache2/ssl"
+inv_add_apache_confs__conf_path: "/etc/apache2/sites-available"
+inv_add_apache_confs__base_document_root: "/var/www/html"
+
+inv_add_apache_confs__configurations_cert_bundles:
   - name: "My-Local-Ansible-Intermediate-CA-1.pem.crt"
     type: "CA"
     src: "/tmp/My-Local-Ansible-Intermediate-CA-1.pem.crt"
@@ -54,19 +68,19 @@ inv_add_apache_confs_configurations_cert_bundles:
     #src_password: "secretPassword"
     dest_user: "www-data"
     dest_group: "www-data"
-    dest_mode: "0700"
+    dest_mode: "0775"
 
-inv_add_apache_confs_configurations:
+inv_add_apache_confs__configurations:
   - server:
       name: "my-grafana-server.domain.tld"
       aliases:
         - "localhost"
         - "127.0.0.1"
-      webmaster: "{{ inv_add_apache_confs_webmaster }}"
+      webmaster: "{{ inv_add_apache_confs__webmaster }}"
     ssl:
       enabled: true
-      key: "{{ inv_add_apache_confs_ssl_files_path }}/my-grafana-server.domain.tld/my-grafana-server.domain.tld.pem.key"
-      crt: "{{ inv_add_apache_confs_ssl_files_path }}/my-grafana-server.domain.tld/my-grafana-server.domain.tld.pem.crt"
+      key: "{{ inv_add_apache_confs__ssl_files_path }}/my-grafana-server.domain.tld/my-grafana-server.domain.tld.pem.key"
+      crt: "{{ inv_add_apache_confs__ssl_files_path }}/my-grafana-server.domain.tld/my-grafana-server.domain.tld.pem.crt"
     proxy:
       url: "https://127.0.0.1:3000"
       pass: "/"
