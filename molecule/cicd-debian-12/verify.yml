@@ -190,14 +190,14 @@
 
             - name: "Check default vhost on HTTP"
               register: result
-              failed_when: not (result.status != 200 or result.status == -1)
+              failed_when: result.status == 200 or result.status == -1
               ansible.builtin.uri:
                 url: "http://localhost:{{ inv_add_apache_confs__http_listen_port }}/"
                 method: "GET"
 
             - name: "Check default vhost on HTTPS"
               register: result
-              failed_when: not (result.status != 200 or result.status == -1)
+              failed_when: result.status == 200 or result.status == -1
               ansible.builtin.uri:
                 url: "https://localhost:{{ inv_add_apache_confs__https_listen_port }}/"
                 method: "GET"
