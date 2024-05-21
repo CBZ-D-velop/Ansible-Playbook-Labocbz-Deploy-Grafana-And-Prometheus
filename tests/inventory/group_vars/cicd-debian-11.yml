@@ -1,4 +1,6 @@
 ---
+tower_env: "cicd-debian-11"
+
 inv_install_prometheus__jobs:
   - name: "My Molecule instances (on SSL + Auth)"
     basic_auth: true
