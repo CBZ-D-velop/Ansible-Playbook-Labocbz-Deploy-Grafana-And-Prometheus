@@ -31,9 +31,10 @@ A common use case for this playbook is deploying a Prometheus cluster with feder
 
 ## Deployment diagramm
 
-![](./assets/Ansible-Playbook-Labocbz-Deploy-Grafana-And-Prometheus.drawio.svg)
+![Ansible-Playbook-Labocbz-Deploy-Grafana-And-Prometheus](./assets/Ansible-Playbook-Labocbz-Deploy-Grafana-And-Prometheus.drawio.svg)
 
 Here is a possible deployment example using this playbook. We can install the "Prometheus and Grafana" service on two main subsystems: Prometheus and Grafana.
+
 * The Prometheus subsystem is an abstraction of a Prometheus cluster based on federation functionality. A Prometheus server can scrape data from other servers, consolidating all the data into a single endpoint. In our example, one server federates data from two other servers, which, in turn, collect metric data from additional servers.
 * The Grafana subsystem consists of an Apache2 server as a reverse proxy and the Grafana server. In our example, Apache2 is installed on the same server as Grafana to add an extra layer of security to the service (QoS, WAF, LDAP Auth, SSL/TLS, mTLS, etc.).
 
