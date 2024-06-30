@@ -31,9 +31,10 @@ A common use case for this playbook is deploying a Prometheus cluster with feder
 
 ## Deployment diagramm
 
-![](./assets/Ansible-Playbook-Labocbz-Deploy-Grafana-And-Prometheus.drawio.svg)
+![Ansible-Playbook-Labocbz-Deploy-Grafana-And-Prometheus](./assets/Ansible-Playbook-Labocbz-Deploy-Grafana-And-Prometheus.drawio.svg)
 
 Here is a possible deployment example using this playbook. We can install the "Prometheus and Grafana" service on two main subsystems: Prometheus and Grafana.
+
 * The Prometheus subsystem is an abstraction of a Prometheus cluster based on federation functionality. A Prometheus server can scrape data from other servers, consolidating all the data into a single endpoint. In our example, one server federates data from two other servers, which, in turn, collect metric data from additional servers.
 * The Grafana subsystem consists of an Apache2 server as a reverse proxy and the Grafana server. In our example, Apache2 is installed on the same server as Grafana to add an extra layer of security to the service (QoS, WAF, LDAP Auth, SSL/TLS, mTLS, etc.).
 
@@ -46,7 +47,6 @@ All communications are encrypted and sometimes authenticated through client cert
 You have to run multiples tests. *tests with an # are mandatory*
 
 ```MARKDOWN
-# lint
 # syntax
 # converge
 # idempotence
@@ -71,7 +71,6 @@ yamllint -c ./.yamllint .
 ansible-lint --config=./.ansible-lint .
 
 # Execute and test your playbook
-molecule lint
 molecule create
 molecule list
 molecule converge
@@ -138,6 +137,14 @@ Here you can put your change to keep a trace of your work and decisions.
 * Imported new CICD
 * Rework global on readme
 * Rename of vars __ and refacto
+
+### 2024-05-19: New CI
+
+* Added Markdown lint to the CICD
+* Rework all Docker images
+* Change CICD vars convention
+* New workers
+* Removed all automation based on branch
 
 ## Authors
 
